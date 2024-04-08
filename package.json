@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "dgram": "^1.0.1",
+    "express": "^4.19.2",
+    "ws": "^8.16.0"
+  },
+  "name": "wizard_room_udp_server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "noshpineapple28",
+  "license": "ISC",
+  "description": "udp server for wizard room app"
+}
