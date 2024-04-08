@@ -12,7 +12,7 @@ const port = 8080;
 const ARDUINOS = {
   servo: {
     state: 0,
-    address: "172.16.8.146",
+    address: "172.16.8.148",
     port: "3000",
   },
 };
@@ -54,16 +54,15 @@ function startWebSocketClient() {
 
 function handleMessage(msg) {
   // send message to the correct arduino
-  if (msg === "servo") {
-    console.log("SERVO CONNECT")
-    const RESPONSE = Buffer.from("rotate");
-    UDP_SERVER.send(RESPONSE, ARDUINOS[msg].port, ARDUINOS[msg].address, (err) => {
-      if (err) {
-        console.error("Failed to send response !!");
-      }
+  if (msg === "release key" || msg === "reset key") {
+    const RESPONSE = Buffer.from(msg);
+    console.log(msg);
+    UDP_SERVER.send(RESPONSE, ARDUINOS.servo.port, ARDUINOS.servo.address, (err) => {
+      if (err)
+        console.log("Failed to send", err);
     });
   } else if (msg === "welcome") {
-    ws.send("UDP");
+    ws.send("UDP"); // connect to WS as admin
   } else {
     console.log("MSG: %s", msg);
   }

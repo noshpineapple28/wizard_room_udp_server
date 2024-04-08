@@ -11,12 +11,16 @@ function startWebSocketClient() {
 
   // set on message callback
   ws.onopen = (d) => {
-    setInterval(()=>ws.send(""), 30000);
+    setInterval(() => ws.send(""), 30000);
   };
 }
 
-function sendRotate(msg) {
-  ws.send("servo");
+function sendRelease() {
+  ws.send("release key");
+}
+
+function sendReset() {
+  ws.send("reset key");
 }
 
 function setup() {
@@ -34,36 +38,62 @@ function setup() {
 function draw() {
   background(49);
   noStroke();
-  drawButton();
+  drawResetButton();
+  drawReleaseButton();
 
   fill(255);
 }
 
-function drawButton() {
+function drawResetButton() {
   if (
     mouseX >= width / 2 - width * 0.15 &&
     mouseX <= width / 2 + width * 0.15 &&
-    mouseY >= height / 2 - height * 0.15 &&
-    mouseY <= height / 2 + height * 0.15
+    mouseY >= height / 4 - width * 0.15 &&
+    mouseY <= height / 4 + width * 0.15
   ) {
     cursor(HAND);
-    fill(color(155, 50, 50))
+    fill(color(155, 50, 50));
   } else {
     cursor(ARROW);
     fill(buttonFill);
   }
-  ellipse(width / 2, height / 2, width * 0.3);
+  ellipse(width / 2, height / 4, width * 0.3);
   fill(255);
-  text("CLICK", width / 2, height / 2);
+  text("RESET", width / 2, height / 4);
 }
 
-function mousePressed() {
+function drawReleaseButton() {
   if (
     mouseX >= width / 2 - width * 0.15 &&
     mouseX <= width / 2 + width * 0.15 &&
-    mouseY >= height / 2 - height * 0.15 &&
-    mouseY <= height / 2 + height * 0.15
+    mouseY >= (3 * height) / 4 - width * 0.15 &&
+    mouseY <= (3 * height) / 4 + width * 0.15
   ) {
-    sendRotate();
+    cursor(HAND);
+    fill(color(155, 50, 50));
+  } else {
+    cursor(ARROW);
+    fill(buttonFill);
+  }
+  ellipse(width / 2, (3 * height) / 4, width * 0.3);
+  fill(255);
+  text("RELEASE KEY", width / 2, (3 * height) / 4);
+}
+
+function mousePressed() {
+  if ( // reset
+    mouseX >= width / 2 - width * 0.15 &&
+    mouseX <= width / 2 + width * 0.15 &&
+    mouseY >= height / 4 - width * 0.15 &&
+    mouseY <= height / 4 + width * 0.15
+  ) {
+    sendReset();
+  } else if ( // release
+    mouseX >= width / 2 - width * 0.15 &&
+    mouseX <= width / 2 + width * 0.15 &&
+    mouseY >= (3 * height) / 4 - width * 0.15 &&
+    mouseY <= (3 * height) / 4 + width * 0.15
+  ) {
+    sendRelease();
   }
 }
